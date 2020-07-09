@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Form, TextArea, useFormState, Select, Option, Checkbox, useFormApi } from 'informed';
 import './App.css';
 import { parse, buildBasicList, buildCardKingdom, buildDeckbox } from './DataParse';
-
+import { tcgPlayerPlaceholder, deckBoxPlaceholder, description, howTo } from './data/placeholder';
 function App() {
   const [parsedData, setParsedData] = useState([]);
   return (
     <div className='App'>
-      <h1>MTG Data Formatter</h1>
+      <header>
+        <h1 style={{marginTop: '.5rem'}}>MTG Data Formatter</h1>
+      </header>
+
       <div class='flex-container'>
         <div>
           <Form>
@@ -19,9 +22,20 @@ function App() {
           <Form>
             <OutputForm parsedData={parsedData} />
           </Form>
-        </div>
-
+        </div>        
       </div>
+
+      <div class='info'>
+        <p>{description}</p>
+        <p>{howTo}</p>
+      </div>
+
+      <footer>
+        <div style={{textAlign: 'left', padding: '.5rem 0 .5rem .5rem'}}>
+          <a style={{marginRight: '1rem'}}href='https://github.com/pleeko/mtg-data-tools/issues'>Suggestions/Bugs</a>
+          <a href='https://github.com/pleeko/mtg-data-tools'>Source Code</a>
+        </div>
+      </footer>
     </div>
   );
 }
@@ -43,6 +57,7 @@ const InputForm = ({ setParsedData }) => {
         </Select>
       </label>
       <TextArea
+        placeholder={formState.values.format === 'tcg' ? tcgPlayerPlaceholder : deckBoxPlaceholder}
         field='rawInput'
         onFocus={(event) => event.target.select()}
       />
@@ -62,7 +77,7 @@ const OutputForm = ({ parsedData }) => {
       formApi.setValue('simpleList', buildCardKingdom(parsedData));
     }
     if (formState.values.format === 'deckbox') {
-      formApi.setValue('deckboxList', buildDeckbox(parsedData,formState.values.condition,formState.values.language, formState.values.foil));
+      formApi.setValue('deckboxList', buildDeckbox(parsedData, formState.values.condition, formState.values.language, formState.values.foil));
     }
   }, [parsedData, formState.values.format, formApi, formState.values.condition, formState.values.language, formState.values.foil]);
 
@@ -79,7 +94,7 @@ const OutputForm = ({ parsedData }) => {
           </Select>
         </label>
       </div>
-      
+
 
       {(formState.values.format === 'list' || formState.values.format === 'cardKingdom') &&
         <TextArea
@@ -125,7 +140,7 @@ const OutputForm = ({ parsedData }) => {
             </Select>
           </label>
           <label>
-            Foil <Checkbox field='foil'/>
+            Foil <Checkbox field='foil' />
           </label>
 
           <TextArea

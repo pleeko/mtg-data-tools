@@ -1,40 +1,35 @@
+* {
+  box-sizing: border-box;
+ }*:before,
+ *:after {
+  box-sizing: border-box;
+ }
+
+html,
+body {
+ height: 100%;
+ position: relative;
+}
+
 .App {
   text-align: center;
+  min-height: 100vh; /* will cover the 100% of viewport */
+  overflow: hidden;
+  display: block;
+  position: relative;
+  padding-bottom: 100px; /* height of your footer */
+  margin: auto;
+  width: 90%;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.info{
+  text-align: left;
 }
 
 textarea {
@@ -44,12 +39,11 @@ textarea {
 
 .flex-container {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
 }
 
 .flex-container > div {
-  width: 40%;
+  width: 50%;
   margin: 10px 10px 10px 10px;
   text-align: center;
 }
