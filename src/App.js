@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Form, TextArea, useFormState, Select, Option, useFormApi } from 'informed';
+import { Form, TextArea, useFormState, Select, Option, Checkbox, useFormApi } from 'informed';
 import './App.css';
-import { parse, buildBasicList, buildCardKingdom } from './DataParse';
+import { parse, buildBasicList, buildCardKingdom, buildDeckbox } from './DataParse';
 
 function App() {
   const [parsedData, setParsedData] = useState([]);
@@ -61,30 +61,77 @@ const OutputForm = ({ parsedData }) => {
     if (formState.values.format === 'cardKingdom') {
       formApi.setValue('simpleList', buildCardKingdom(parsedData));
     }
-
-  }, [parsedData, formState.values.format, formApi]);
+    if (formState.values.format === 'deckbox') {
+      formApi.setValue('deckboxList', buildDeckbox(parsedData,formState.values.condition,formState.values.language, formState.values.foil));
+    }
+  }, [parsedData, formState.values.format, formApi, formState.values.condition, formState.values.language, formState.values.foil]);
 
   return (
     <>
-      <label>
-        Output Format
-        <Select field='format' initialValue='list'>
-          <Option value='list'>Copy List</Option>
-          <Option value='cardKingdom'>Card Kingdom</Option>
-          <Option value='csv'>CSV</Option>
-          <Option value='editor'>Editor</Option>
-        </Select>
-      </label>
+      <div>
+        <label>
+          Output Format
+          <Select field='format' initialValue='list'>
+            <Option value='list'>Copy List</Option>
+            <Option value='cardKingdom'>Card Kingdom</Option>
+            <Option value='deckbox'>Deckbox</Option>
+            <Option value='editor'>Editor</Option>
+          </Select>
+        </label>
+      </div>
+      
 
       {(formState.values.format === 'list' || formState.values.format === 'cardKingdom') &&
         <TextArea
           field='simpleList'
           onFocus={(event) => event.target.select()}
-        />}
+        />
+      }
 
       {formState.values.format === 'editor' &&
         <>
           <OutputTable parsedData={parsedData} />
+        </>
+      }
+
+      {(formState.values.format === 'deckbox') &&
+        <>
+          <label>
+            Condition
+            <Select field='condition' initialValue='Near Mint'>
+              <Option value=''>Leave Blank</Option>
+              <Option value='Mint'>Mint</Option>
+              <Option value='Near Mint'>Near Mint</Option>
+              <Option value='Good'>Good</Option>
+              <Option value='Played'>played</Option>
+              <Option value='Heavily Played'>Heavily Played</Option>
+              <Option value='Poor'>Poor</Option>
+            </Select>
+          </label>
+          <label>
+            Language
+            <Select field='language' initialValue='English'>
+              <Option value=''>Leave Blank</Option>
+              <Option value='English'>English</Option>
+              <Option value='French'>French</Option>
+              <Option value='Italian'>Italian</Option>
+              <Option value='Spanish'>Spanish</Option>
+              <Option value='Portuguese'>Portuguese</Option>
+              <Option value='Japanese'>Japanese</Option>
+              <Option value='Chinese'>Chinese</Option>
+              <Option value='Russian'>Russian</Option>
+              <Option value='Korean'>Korean</Option>
+              <Option value='Traditional Chinese'>Traditional Chinese</Option>
+            </Select>
+          </label>
+          <label>
+            Foil <Checkbox field='foil'/>
+          </label>
+
+          <TextArea
+            field='deckboxList'
+            onFocus={(event) => event.target.select()}
+          />
         </>
       }
 
@@ -106,18 +153,20 @@ const OutputTable = ({ parsedData }) => {
   };
 
   return (
-    <table style={{ width: '100%', overflowY: 'scroll', height: '500px', display: 'block' }}>
-      <thead>
-        <tr>
-          <th>Quantity</th>
-          <th>Name</th>
-          <th>Edition</th>
-        </tr>
-      </thead>
-      <tbody>
-        {table()}
-      </tbody>
-    </table>
+    parsedData ?
+      <table style={{ width: '100%', overflowY: 'scroll', height: '500px', display: 'block' }}>
+        <thead>
+          <tr>
+            <th>Quantity</th>
+            <th>Name</th>
+            <th>Edition</th>
+          </tr>
+        </thead>
+        <tbody>
+          {table()}
+        </tbody>
+      </table>
+      : <></>
   );
 };
 

@@ -31,6 +31,16 @@ export const buildCardKingdom = (data) => {
   }
 }
 
+export const buildDeckbox = (data, coindition = '', language = '', foil = null) => {
+  if(data){
+    data = data.map( card => {
+      return `${card.quantity},"${card.name}",${card.edition.name},${coindition},${language},${foil ? 'foil': ''}`;
+    });
+    data.unshift('Count,Name,Edition,Condition,Language,Foil')
+    return data.join('\n');
+  }
+}
+
 const tcg = (input) => {
   const parsedData = [];
   let array = input.match(/[^\r\n]+/g);
