@@ -46,7 +46,7 @@ const tcg = (input) => {
   let array = input.match(/[^\r\n]+/g);
 
   array.forEach(line => {
-    if (line.match(/^\d/)) {
+    if (line.match(/(\d*) (.*) \[(.*)\]/)) {
       let regexp = /(\d*) (.*) \[(.*)\]/;
       let matchAll = line.match(regexp);
       let edition = findByCode(matchAll[3]);
