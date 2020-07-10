@@ -14,13 +14,13 @@ function App() {
       </header>
 
       <div className='flex-grid'>
-        <div className='col' style={{marginRight: '.5rem'}}>
+        <div className='col' style={{ marginRight: '.5rem' }}>
           <Form>
             <InputForm setParsedData={setParsedData} />
           </Form>
         </div>
 
-        <div className='col' style={{marginLeft: '.5rem'}}>
+        <div className='col' style={{ marginLeft: '.5rem' }}>
           <Form>
             <OutputForm parsedData={parsedData} />
           </Form>
