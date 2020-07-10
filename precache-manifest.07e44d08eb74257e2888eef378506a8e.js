@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "c14abc580e097e1335fc5b44d589ef48",
+    "revision": "160edb2a6e3c5dda0a724cf27f4d1da1",
     "url": "/mtg-data-tools/index.html"
   },
   {
-    "revision": "79c9e8bbca8d63e1026a",
-    "url": "/mtg-data-tools/static/css/main.178e6b34.chunk.css"
+    "revision": "942e20863c6e44a1a130",
+    "url": "/mtg-data-tools/static/css/main.51e0b122.chunk.css"
   },
   {
     "revision": "0c9bade7d9bcc544a72d",
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/mtg-data-tools/static/js/2.576e3ba0.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "79c9e8bbca8d63e1026a",
-    "url": "/mtg-data-tools/static/js/main.f459ef28.chunk.js"
+    "revision": "942e20863c6e44a1a130",
+    "url": "/mtg-data-tools/static/js/main.0595c753.chunk.js"
   },
   {
     "revision": "25bd10c53e2603d4af34",
