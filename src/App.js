@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Form, TextArea, useFormState, Select, Option, Checkbox, useFormApi } from 'informed';
 import './App.css';
-import { parse, buildBasicList, buildCardKingdom, buildDeckbox } from './DataParse';
-import { tcgPlayerPlaceholder, deckBoxPlaceholder, description, howTo } from './data/placeholder';
+import { tcgInput,basicListInput, buildBasicList, buildCardKingdom, buildDeckbox, buildTcg } from './DataParse';
+import { inputPlaceholders, description, howTo } from './data/placeholder';
+const editions = require('./data/sets.json');
+
+
 function App() {
   const [parsedData, setParsedData] = useState([]);
   return (
@@ -11,7 +14,7 @@ function App() {
         <h1 style={{marginTop: '.5rem'}}>MTG Data Formatter</h1>
       </header>
 
-      <div class='flex-container'>
+      <div className='flex-container'>
         <div>
           <Form>
             <InputForm setParsedData={setParsedData} />
@@ -25,7 +28,7 @@ function App() {
         </div>        
       </div>
 
-      <div class='info'>
+      <div className='info'>
         <p>{description}</p>
         <p>{howTo}</p>
       </div>
@@ -44,20 +47,47 @@ const InputForm = ({ setParsedData }) => {
   const formState = useFormState();
 
   useEffect(() => {
-    setParsedData(parse(formState.values.rawInput, formState.values.format));
-  }, [formState.values.rawInput, formState.values.format, setParsedData]);
+    if(formState.values.format === 'basicList'){
+      setParsedData(basicListInput(formState.values.rawInput, formState.values.set));
+    }else{
+      setParsedData(tcgInput(formState.values.rawInput));
+    }
+  }, [formState.values.rawInput, formState.values.format, setParsedData, formState.values.set]);
 
   return (
     <>
       <label>
         Input Format
-        <Select field='format' initialValue='tcg'>
+        <Select field='format' initialValue='basicList'>
           <Option value='tcg'>TCG</Option>
-          <Option value='deckbox'>Deckbox</Option>
+          <Option value='deckBox'>Deckbox</Option>
+          <Option value='basicList'>Basic List</Option>
         </Select>
       </label>
+      
+      {(formState.values.format === 'basicList') &&
+        <div>
+          <label>
+            Set
+            <Select field='set' initialValue=''>
+              <Option value=''>None</Option>
+              {editions.sort((a,b)=>{
+                if (a.name < b.name) {
+                  return -1;
+                }
+                if (a.name > b.name) {
+                  return 1;
+                }
+                return 0;
+              }).map((edition) => {
+                return <Option key={edition.name} value={edition.productCode}>{edition.name}</Option>
+              })}
+            </Select>
+          </label>
+        </div>
+      }
       <TextArea
-        placeholder={formState.values.format === 'tcg' ? tcgPlayerPlaceholder : deckBoxPlaceholder}
+        placeholder={inputPlaceholders[formState.values.format]}
         field='rawInput'
         onFocus={(event) => event.target.select()}
       />
@@ -76,6 +106,9 @@ const OutputForm = ({ parsedData }) => {
     if (formState.values.format === 'cardKingdom') {
       formApi.setValue('simpleList', buildCardKingdom(parsedData));
     }
+    if (formState.values.format === 'tcg') {
+      formApi.setValue('simpleList', buildTcg(parsedData));
+    }
     if (formState.values.format === 'deckbox') {
       formApi.setValue('deckboxList', buildDeckbox(parsedData, formState.values.condition, formState.values.language, formState.values.foil));
     }
@@ -88,6 +121,7 @@ const OutputForm = ({ parsedData }) => {
           Output Format
           <Select field='format' initialValue='list'>
             <Option value='list'>Copy List</Option>
+            <Option value='tcg'>TCG</Option>
             <Option value='cardKingdom'>Card Kingdom</Option>
             <Option value='deckbox'>Deckbox</Option>
             <Option value='editor'>Editor</Option>
@@ -96,7 +130,7 @@ const OutputForm = ({ parsedData }) => {
       </div>
 
 
-      {(formState.values.format === 'list' || formState.values.format === 'cardKingdom') &&
+      {(formState.values.format === 'list' || formState.values.format === 'tcg' || formState.values.format === 'cardKingdom') &&
         <TextArea
           field='simpleList'
           onFocus={(event) => event.target.select()}
