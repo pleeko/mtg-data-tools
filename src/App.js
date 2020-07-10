@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css';
+import './App.scss';
 import { Form } from 'informed';
 import InputForm from './components/InputForm';
 import OutputForm from './components/OutputForm';
@@ -13,14 +13,14 @@ function App() {
         <h1 style={{ marginTop: '.5rem' }}>MTG Data Formatter</h1>
       </header>
 
-      <div className='flex-container'>
-        <div>
+      <div className='flex-grid'>
+        <div className='col' style={{marginRight: '.5rem'}}>
           <Form>
             <InputForm setParsedData={setParsedData} />
           </Form>
         </div>
 
-        <div>
+        <div className='col' style={{marginLeft: '.5rem'}}>
           <Form>
             <OutputForm parsedData={parsedData} />
           </Form>

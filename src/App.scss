@@ -41,13 +41,39 @@ textarea {
   height: 500px;
 }
 
-.flex-container {
-  display: flex;
-  justify-content: center;
+@media (max-width: 400px) {
+  textarea {
+    width: 100%;
+    height: 300px;
+  }
 }
 
-.flex-container > div {
-  width: 50%;
-  margin: 10px 10px 10px 10px;
-  text-align: center;
+
+
+// https://css-tricks.com/dont-overthink-flexbox-grids/
+.flex-grid {
+  display: flex;
 }
+.flex-grid .col {
+  flex: 1;
+}
+.flex-grid-thirds {
+  display: flex;
+  justify-content: space-between;
+}
+.flex-grid-thirds .col {
+  width: 32%;
+}
+
+@media (max-width: 400px) {
+  .flex-grid,
+  .flex-grid-thirds {
+    display: block;
+    .col {
+      width: 100%;
+      margin: 0 0 10px 0;
+    }
+  }
+}
+
+
