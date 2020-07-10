@@ -28,8 +28,12 @@ footer {
   width: 100%;
 }
 
-.info{
+.info {
   text-align: left;
+}
+
+label{ 
+  margin-right: .25rem;
 }
 
 textarea {
