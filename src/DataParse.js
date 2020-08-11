@@ -4,6 +4,11 @@ const editions = require('./data/sets.json');
 const findByCode = (code) => {
   return editions.find(({ productCode }) => productCode === code);
 }
+const findBySetName = (setName) => {
+  console.log(setName)
+  return editions.find(({ name }) => name === setName);
+}
+
 
 export const buildBasicList = (data) => {
   if (data) {
@@ -64,7 +69,6 @@ export const tcgInput = (input) => {
   }
 }
 
-
 export const basicListInput = (input, set) => {
   if (input) {
     const parsedData = [];
@@ -87,11 +91,29 @@ export const basicListInput = (input, set) => {
         quantity: count,
         foil: null
       })
-
     });
-
 
     return parsedData;
   }
+}
 
+export const deckBoxInput = (input) => {
+  if (input) {
+    const parsedData = [];
+    let array = input.match(/[^\r\n]+/g);
+    array.forEach(line => {
+      let card = line.match(/(,|\r?\n|\r|^)(?:"([^"]*(?:""[^"]*)*)"|([^",\r\n]*))/g).map(elm => elm.replace(/^(,)/,""));
+      console.log(card)
+
+      parsedData.push({
+        name: card[2],
+        edition: findBySetName(card[3]),
+        quantity: card[0],
+        foil: card[7],
+      })
+
+    });
+
+    return parsedData;
+  }
 }
