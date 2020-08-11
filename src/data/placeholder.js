@@ -19,7 +19,7 @@ Simulacrum x2
 Sengir Vampire x1
 Bog Wraith x1`;
 
-const deckBoxPlaceholder = `TODO: STILL NEED TO IMPLEMENT`;
+const deckBoxPlaceholder = 'Paste csv export';
 
 export const inputPlaceholders ={
   tcg: tcgPlayerPlaceholder,
